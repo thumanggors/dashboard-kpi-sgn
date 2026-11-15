@@ -4,155 +4,182 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta name="color-scheme" content="light dark">
-<title>Dashboard KPI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Dashboard Monitoring KPI Karyawan</title>
 <style>
-:root{
-  --bg:#f4f6fb;--card:#fff;--tx:#14213d;--mut:#556178;--bd:#dbe3f0;--muted-bg:#eaeff8;
-  --pri:#1e40af;--on-pri:#fff;--acc:#b45309;--ring:#1e40af;
-  --ok:#15803d;--mid:#b45309;--low:#b91c1c;--ok-bg:#dcfce7;--mid-bg:#fef3c7;--low-bg:#fee2e2;
-  --sh:0 1px 2px rgba(20,33,61,.06);
-}
-@media(prefers-color-scheme:dark){:root{
-  --bg:#0c1220;--card:#141c2e;--tx:#e6ebf5;--mut:#9aa6bd;--bd:#25314a;--muted-bg:#1b2539;
-  --pri:#6d9bff;--on-pri:#0c1220;--acc:#fbbf24;--ring:#9db9ff;
-  --ok:#4ade80;--mid:#fbbf24;--low:#f87171;--ok-bg:#12331f;--mid-bg:#3a2d0c;--low-bg:#3b1618;--sh:none}}
+:root{color-scheme:light;--ink:#12233f;--muted:#65728a;--line:#dbe3ee;--panel:#fff;--soft:#f3f6fa;--blue:#175cd3;--blue-soft:#eaf1ff;--teal:#0b7f75;--green:#14804a;--amber:#b25e09;--red:#b42318;--shadow:0 12px 34px rgba(18,35,63,.08)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 "Fira Sans",system-ui,Segoe UI,sans-serif}
-.num,.big{font-family:"Fira Code",ui-monospace,monospace;font-variant-numeric:tabular-nums}
-:focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:6px}
-button,select,input{font:inherit;color:inherit}
-button{cursor:pointer}
-.mut{color:var(--mut)}
-/* top bar */
-header{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--bd)}
-.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:200px}
-.logo{width:32px;height:32px;border-radius:8px;background:var(--pri);color:var(--on-pri);display:grid;place-items:center}
-h1{font-size:16px;margin:0;line-height:1.2}h1 small{display:block;font-weight:400;color:var(--mut);font-size:12px}
-.ctl{min-height:40px;padding:6px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg)}
-.chip{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:8px;background:var(--muted-bg);font-weight:500}
-.btn{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:8px;border:1px solid var(--bd);background:var(--card);font-weight:500;transition:background .15s}
-.btn:hover{background:var(--muted-bg)}
-.btn.pri{background:var(--pri);color:var(--on-pri);border-color:var(--pri)}
-svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-main{padding:16px;max-width:1280px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
-.row>*,.stats>*{min-width:0}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;box-shadow:var(--sh)}
-.card h2{font-size:14px;margin:0 0 2px}.card .sub{color:var(--mut);font-size:12px;margin:0 0 12px}
-/* stat cards */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.stat .lbl{color:var(--mut);font-size:12px}.stat .big{font-size:26px;font-weight:600;line-height:1.2;margin-top:2px}
-.ok{color:var(--ok)}.mid{color:var(--mid)}.low{color:var(--low)}
-/* grid of charts */
-.row{display:grid;gap:14px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
-@media(max-width:860px){.row{grid-template-columns:minmax(0,1fr)}}
-/* ranking bars */
-.rank{display:grid;gap:6px}
-.rb{display:grid;grid-template-columns:minmax(80px,150px) 1fr 60px;align-items:center;gap:10px;min-height:36px;padding:2px 6px;border:0;background:none;text-align:left;border-radius:8px}
-.rb:hover,.rb[aria-pressed=true]{background:var(--muted-bg)}
-.rb .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
-.trk{position:relative;height:14px;background:var(--muted-bg);border-radius:7px}
-.rb:hover .trk,.rb[aria-pressed=true] .trk{background:var(--bd)}
-.fill{position:absolute;inset:0 auto 0 0;border-radius:7px;transition:width .4s}
-.tgt{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--tx);opacity:.55}
-.fill.ok{background:var(--ok)}.fill.mid{background:var(--mid)}.fill.low{background:var(--low)}
-.legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:10px;font-size:12px;color:var(--mut)}
-.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
-.dot.ok{background:var(--ok)}.dot.mid{background:var(--mid)}.dot.low{background:var(--low)}
-/* distribution */
-.dist{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end;height:200px}
-.col{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%;border:0;background:none;border-radius:8px;padding:4px}
-.col:hover,.col[aria-pressed=true]{background:var(--muted-bg)}
-.col .bar{width:70%;min-height:3px;border-radius:6px 6px 0 0;transition:height .4s}
-.col .bar.ok{background:var(--ok)}.col .bar.mid{background:var(--mid)}.col .bar.low{background:var(--low)}
-.col .c{font-weight:600}.col .l{font-size:12px;color:var(--mut);text-align:center}
+body{margin:0;background:#edf2f7;color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:14px}
+button,select,input{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.page{max-width:1500px;margin:0 auto;padding:26px}
+.header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;padding:22px 24px;color:#fff;background:linear-gradient(120deg,#102a56,#175cd3 64%,#0b7f75);border-radius:16px;box-shadow:var(--shadow)}
+h1{margin:0 0 8px;font-size:26px;line-height:1.2}
+.subtitle{margin:0;color:#dce8ff}
+.live{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.dot{width:9px;height:9px;border-radius:50%;background:#6ce9a6;box-shadow:0 0 0 5px rgba(108,233,166,.16)}
+.meta-bar{margin:14px 0 18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 11px;color:var(--muted)}
+.chip strong{color:var(--ink);font-weight:700}
+.btn{border:1px solid #b7c5d8;background:#fff;color:var(--ink);border-radius:9px;padding:8px 12px}
+.btn:hover{background:var(--soft)}
+.btn.first{margin-left:auto}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card,.panel{background:var(--panel);border:1px solid rgba(219,227,238,.95);border-radius:14px;box-shadow:var(--shadow)}
+.card{padding:17px 18px;min-height:120px}
+.label{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.value{margin:9px 0 5px;font-size:30px;font-weight:800;letter-spacing:-.03em}
+.hint{color:var(--muted);font-size:12px;line-height:1.45}
+.value.bad{color:var(--red)}.value.good{color:var(--green)}
+.section{margin-top:20px}
+.two{grid-template-columns:minmax(0,1.35fr) minmax(360px,.65fr)}
+.panel{padding:18px;min-width:0}
+.panel-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:16px}
+h2{margin:0;font-size:17px}
+.panel-note{color:var(--muted);font-size:12px;margin-top:4px}
+/* ranking */
+.progress-row{display:grid;grid-template-columns:180px 1fr 64px;gap:12px;align-items:center;width:100%;margin:4px 0;padding:7px 8px;border:0;border-radius:10px;background:none;text-align:left}
+.progress-row:hover,.progress-row[aria-pressed=true]{background:var(--soft)}
+.progress-label{color:#32415c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{position:relative;height:10px;border-radius:999px;background:#e9eef5;overflow:hidden}
+.bar{height:100%;border-radius:inherit;background:var(--blue);transition:width .4s}
+.target{position:absolute;top:0;bottom:0;width:2px;background:var(--red)}
+.pct{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.legend{display:flex;gap:16px;color:var(--muted);font-size:12px;margin-top:12px}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;margin-right:6px;border-radius:2px;background:var(--blue)}
+.legend .target-key::before{background:var(--red);width:2px}
+/* status */
+.status-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.status-box{background:var(--soft);border:2px solid transparent;border-radius:10px;padding:14px;text-align:left}
+.status-box:hover{border-color:var(--line)}.status-box[aria-pressed=true]{border-color:var(--blue);background:var(--blue-soft)}
+.status-box strong{display:block;font-size:24px;margin-top:7px}
+.status-box small{color:var(--muted)}
+.status-box.good strong{color:var(--green)}.status-box.warn strong{color:var(--amber)}.status-box.bad strong{color:var(--red)}.status-box.none strong{color:var(--muted)}
 /* scatter */
-.scw{position:relative}
+.trend-wrap{overflow:hidden}
 svg.sc{width:100%;height:auto;display:block}
-svg.sc text{fill:var(--mut);font-size:11px;font-family:"Fira Sans",sans-serif}
-svg.sc .gl{stroke:var(--bd);stroke-width:1}
-svg.sc .pt{stroke:var(--card);stroke-width:1.5;cursor:pointer;transition:r .12s}
-svg.sc .pt:hover,svg.sc .pt:focus{r:8;outline:none;stroke:var(--tx)}
-svg.sc .pt.ok{fill:var(--ok)}svg.sc .pt.mid{fill:var(--mid)}svg.sc .pt.low{fill:var(--low)}
-/* tooltip */
-#tip{position:fixed;z-index:20;pointer-events:none;background:var(--tx);color:var(--bg);padding:8px 10px;border-radius:8px;font-size:12px;line-height:1.45;max-width:240px;opacity:0;transition:opacity .1s}
+.gridline{stroke:#e6ebf2;stroke-width:1}
+.svg-label{fill:#6d7890;font-size:11px}
+.pt{stroke:#fff;stroke-width:1.5;cursor:pointer;transition:r .12s}
+.pt:hover,.pt:focus{r:8;outline:none;stroke:var(--ink)}
+.pt.good{fill:var(--green)}.pt.warn{fill:var(--amber)}.pt.bad{fill:var(--red)}.pt.none{fill:#94a3b8}
+.sc-legend{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--muted);font-size:12px;margin-top:8px}
+.sc-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+/* filter + table */
+.filter-field{display:grid;gap:5px;min-width:190px}
+.filter-field span{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase}
+.filter-panel{margin-bottom:20px;padding:16px 18px}
+.filter-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.filter-row .grow{flex:1;min-width:200px}
+select,input{border:1px solid #c5d0df;background:#fff;border-radius:8px;padding:8px 10px;color:var(--ink)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px;max-height:640px}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th,td{padding:10px 11px;border-bottom:1px solid #e7edf4;text-align:right;white-space:nowrap}
+th{position:sticky;top:0;z-index:1;background:#edf3fb;color:#3c4c66;font-size:12px}
+th button{border:0;background:none;padding:0;font-weight:700;color:inherit}
+th.l,td.l{text-align:left}
+th:nth-child(2),td:nth-child(2){text-align:left;position:sticky;left:0}
+th:nth-child(2){z-index:2;background:#e5edf8}
+td:nth-child(2){background:#fff;font-weight:700}
+tbody tr:hover td{background:#f7f9fc}
+tr.sel td{background:var(--blue-soft)!important}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.badge.good{color:var(--green);background:#e9f7ef}.badge.warn{color:var(--amber);background:#fff4e5}.badge.bad{color:var(--red);background:#ffefed}.badge.none{color:var(--muted);background:#eef2f6}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.footer{color:var(--muted);font-size:12px;line-height:1.55;margin:14px 2px 0}
+.err{color:var(--red);min-height:18px;margin:0}
+#tip{position:fixed;z-index:20;pointer-events:none;background:#17223a;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;line-height:1.45;max-width:260px;opacity:0;transition:opacity .1s}
 #tip.on{opacity:1}
-/* table */
-.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
-.tools input{flex:1;min-width:200px}
-.tag{display:inline-flex;align-items:center;gap:4px;min-height:32px;padding:0 10px;border-radius:99px;background:var(--muted-bg);border:0;font-size:12px;font-weight:500}
-.tw{overflow-x:auto;border:1px solid var(--bd);border-radius:10px}
-table{width:100%;border-collapse:collapse;min-width:760px}
-th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}
-th{position:sticky;top:0;background:var(--muted-bg);font-size:12px;font-weight:600;color:var(--mut)}
-th button{border:0;background:none;padding:0;font-weight:600;color:inherit;display:inline-flex;gap:4px;align-items:center;min-height:28px}
-td.n,th.n{text-align:right}tr:last-child td{border-bottom:0}
-tbody tr:hover{background:var(--muted-bg)}tr.sel{outline:2px solid var(--pri);outline-offset:-2px}
-.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-weight:600;font-size:12px}
-.pill.ok{background:var(--ok-bg);color:var(--ok)}.pill.mid{background:var(--mid-bg);color:var(--mid)}.pill.low{background:var(--low-bg);color:var(--low)}
-.empty{padding:28px;text-align:center;color:var(--mut)}
 /* login */
-#lock{position:fixed;inset:0;z-index:30;background:var(--bg);display:grid;place-items:center;padding:16px}
+#lock{position:fixed;inset:0;z-index:30;background:#0b1220;display:grid;place-items:center;padding:16px}
 #lock[hidden]{display:none}
-#lf{width:min(380px,100%);display:grid;gap:12px;padding:24px}
-#lf label{font-weight:500}#lf input{width:100%}
-.err{color:var(--low);min-height:20px;margin:0}
+#lf{width:min(320px,100%);background:#fff;border-radius:16px;padding:27px;display:grid;gap:14px}
+#lf b{font-size:14px;color:#102a56}
+#lf input{width:100%;padding:11px 10px}
+#lf .btn{padding:11px;background:#eee;border-color:#767676}
 .pwrow{display:flex;gap:8px}.pwrow input{flex:1}
+[hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-@media(max-width:560px){.rb{grid-template-columns:90px 1fr 54px}}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:620px){.page{padding:12px}.header{padding:18px;flex-direction:column}h1{font-size:22px}.kpis{grid-template-columns:1fr}.progress-row{grid-template-columns:110px 1fr 55px}.btn.first{margin-left:0}}
 </style>
 </head>
 <body>
 
 <div id="lock" hidden>
-  <form id="lf" class="card" autocomplete="off">
-    <div class="brand"><span class="logo"><svg class="i" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span>
-      <h1>Dashboard KPI<small>Masuk dengan password divisi atau admin</small></h1></div>
-    <div><label for="pw">Password</label>
-      <div class="pwrow"><input id="pw" class="ctl" type="password" autocomplete="current-password" required>
-        <button type="button" class="btn" id="eye" aria-label="Tampilkan password" aria-pressed="false">Lihat</button></div></div>
+  <form id="lf" autocomplete="off">
+    <b>Dashboard KPI Karyawan SGN</b>
+    <div class="pwrow"><input id="pw" type="password" placeholder="Password" autocomplete="current-password" aria-label="Password" required>
+      <button type="button" class="btn" id="eye" aria-pressed="false">Lihat</button></div>
     <p id="lerr" class="err" role="alert"></p>
-    <button class="btn pri" id="lbtn" style="justify-content:center">Masuk</button>
+    <button class="btn" id="lbtn">Masuk</button>
   </form>
 </div>
 
-<header>
-  <div class="brand"><span class="logo"><svg class="i" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span>
-    <h1>Dashboard KPI<small id="upd">memuat…</small></h1></div>
-  <label class="sr" for="per" hidden>Periode</label>
-  <select id="per" class="ctl" aria-label="Periode"></select>
-  <span class="chip" id="who"></span>
-  <button class="btn" id="out"><svg class="i" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Keluar</button>
-</header>
+<div class="page" id="app" hidden>
+  <header class="header">
+    <div><h1>Dashboard Monitoring KPI Karyawan</h1><p class="subtitle" id="sub"></p></div>
+    <div class="live"><span class="dot"></span><span>Terhubung ke Excel</span></div>
+  </header>
 
-<main id="app">
-  <section class="stats" id="stats" aria-label="Ringkasan"></section>
-  <div class="row">
-    <section class="card"><h2 id="rt">Skor rata-rata</h2><p class="sub" id="rs">Klik batang untuk memfilter tabel. Garis = target 90%.</p><div class="rank" id="rank"></div>
-      <div class="legend"><span><i class="dot ok"></i>≥ 90% Tercapai</span><span><i class="dot mid"></i>70–89% Cukup</span><span><i class="dot low"></i>&lt; 70% Rendah</span></div></section>
-    <section class="card"><h2>Sebaran skor karyawan</h2><p class="sub">Jumlah orang per rentang skor. Klik untuk memfilter.</p><div class="dist" id="dist"></div></section>
+  <div class="meta-bar">
+    <span class="chip">Data diperbarui: <strong id="upd"></strong></span>
+    <span class="chip">Akses: <strong id="who"></strong></span>
+    <span class="chip">Refresh otomatis: <strong>30 detik</strong></span>
+    <button class="btn first" id="refresh">Perbarui sekarang</button>
+    <button class="btn" id="out">Keluar</button>
   </div>
-  <section class="card"><h2>Target vs skor akhir per orang</h2><p class="sub">Tiap titik = satu karyawan. Arahkan / fokus untuk detail, klik untuk menyorot di tabel.</p><div class="scw" id="sc"></div></section>
-  <section class="card"><h2>Daftar karyawan <span class="mut num" id="cnt"></span></h2>
-    <div class="tools"><label for="q" hidden>Cari</label><input id="q" class="ctl" type="search" placeholder="Cari nama, jabatan, atau area…"><span id="tags"></span></div>
-    <div class="tw"><table><thead id="th"></thead><tbody id="tb"></tbody></table></div>
-    <p id="err" class="err"></p></section>
-</main>
+
+  <section class="grid kpis" id="stats" aria-label="Ringkasan"></section>
+
+  <section class="section grid two">
+    <div class="panel">
+      <div class="panel-head"><div><h2 id="rt">Skor rata-rata per divisi</h2><div class="panel-note" id="rs">Klik baris untuk memfilter. Garis merah = target 90%.</div></div></div>
+      <div id="rank"></div>
+      <div class="legend"><span>Skor rata-rata</span><span class="target-key">Target 90%</span></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div><h2>Status karyawan</h2><div class="panel-note">Klik kotak untuk memfilter tabel.</div></div></div>
+      <div class="status-summary" id="status"></div>
+    </div>
+  </section>
+
+  <section class="section panel trend-wrap">
+    <div class="panel-head"><div><h2>Pencapaian target vs skor akhir</h2><div class="panel-note">Satu titik = satu karyawan. Arahkan atau fokus untuk detail, klik untuk menyorot di tabel.</div></div></div>
+    <div id="sc"></div>
+    <div class="sc-legend"><span><i style="background:var(--green)"></i>Tercapai</span><span><i style="background:var(--amber)"></i>Perlu Perhatian</span><span><i style="background:var(--red)"></i>Di Bawah Target</span><span><i style="background:#94a3b8"></i>Tanpa Capaian</span></div>
+  </section>
+
+  <section class="section panel filter-panel">
+    <div class="filter-row">
+      <label class="filter-field"><span>Periode</span><select id="per"></select></label>
+      <label class="filter-field" id="dvw"><span>Divisi</span><select id="dv"></select></label>
+      <label class="filter-field"><span>Status</span><select id="stt"></select></label>
+      <label class="filter-field grow"><span>Cari</span><input id="q" type="search" placeholder="Nama, jabatan, atau area"></label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><h2>Rincian karyawan <span id="cnt" style="color:var(--muted);font-weight:400"></span></h2><div class="panel-note">Klik judul kolom untuk mengurutkan.</div></div></div>
+    <div class="table-wrap"><table><thead id="th"></thead><tbody id="tb"></tbody></table></div>
+    <p id="err" class="err"></p>
+  </section>
+
+  <p class="footer">Skor akhir = kehadiran + kedisiplinan + capaian target, dengan bobot tiap divisi di file Excel. "Tanpa Capaian" = capaian target masih 0%, sehingga skor hanya berasal dari kehadiran dan kedisiplinan. Data dibaca dari nilai terakhir yang disimpan di Excel.</p>
+</div>
 <div id="tip" role="tooltip"></div>
 
 <script>
 const $=id=>document.getElementById(id);
 const nf=new Intl.NumberFormat("id-ID",{minimumFractionDigits:1,maximumFractionDigits:1});
 const pct=v=>v==null?"-":nf.format(v*100)+"%", avg=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:0;
-const st=v=>v>=.9?"ok":v>=.7?"mid":"low", stl={ok:"Tercapai",mid:"Cukup",low:"Rendah"};
-const BK=[["low",0,.5,"< 50%"],["low",.5,.7,"50–69%"],["mid",.7,.9,"70–89%"],["ok",.9,9,"≥ 90%"]];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ST=[["ok","good","Tercapai","≥ 90%"],["mid","warn","Perlu Perhatian","70–89%"],["low","bad","Di Bawah Target","< 70%"],["none","none","Tanpa Capaian","target 0%"]];
+const stOf=r=>r.target<=0?"none":r.skor>=.9?"ok":r.skor>=.7?"mid":"low";
+const stm=k=>ST.find(s=>s[0]==k);
 const COLS=[["nama","Nama"],["divisi","Divisi"],["jabatan","Jabatan"],["area","Area"],["kehadiran","Kehadiran",1],["kedisiplinan","Disiplin",1],["target","Target",1],["skor","Skor akhir",1]];
-const IC={x:'<svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M18 6L6 18M6 6l12 12"/></svg>'};
 
-let D={rows:[],updated:""},PW=null,F={div:null,bucket:null,sel:null},S={k:"skor",d:-1},lastSig="",timer=null;
+let D={rows:[],updated:""},PW=null,F={div:null,st:null,sel:null},S={k:"skor",d:-1},lastSig="",timer=null;
 try{PW=sessionStorage.getItem("kpipw")}catch(e){}
 
 /* ---------- auth ---------- */
@@ -170,25 +197,26 @@ async function decrypt(e,pw){ // coba password ke tiap grup; yang cocok terbuka
   if(!out.rows.length)throw 0;
   return out;
 }
+const sigOf=()=>window.KPI_ENC.groups.map(g=>g.items[0].iv).join(); // berubah tiap build
 function script(){return new Promise((ok,no)=>{const s=document.createElement("script");s.src="data.enc.js?t="+Date.now();
   s.onload=()=>{s.remove();ok()};s.onerror=()=>{s.remove();no()};document.head.appendChild(s)})}
-const sigOf=()=>window.KPI_ENC.groups.map(g=>g.items[0].iv).join(); // berubah tiap build
 async function load(force){
   try{await script()}catch(e){$("err").textContent="Data gagal dimuat.";return}
   if(!PW)return;
   const sig=sigOf();
   if(!force&&sig===lastSig)return; // tidak ada pembaruan: hindari dekripsi ulang (PBKDF2 berat)
-  try{D=await decrypt(window.KPI_ENC,PW);lastSig=sig;showApp();render()}
+  try{D=await decrypt(window.KPI_ENC,PW);lastSig=sig;$("err").textContent="";showApp();render()}
   catch(e){logout("Password salah atau sudah diganti.")}
 }
 function showApp(){$("lock").hidden=true;$("app").hidden=false;if(!timer)timer=setInterval(()=>load(),30000)}
 function logout(msg){
-  PW=null;D={rows:[],updated:""};lastSig="";F={div:null,bucket:null,sel:null};clearInterval(timer);timer=null;
+  PW=null;D={rows:[],updated:""};lastSig="";F={div:null,st:null,sel:null};clearInterval(timer);timer=null;
   try{sessionStorage.removeItem("kpipw")}catch(e){}
-  $("app").hidden=true;$("tb").innerHTML="";$("stats").innerHTML="";$("rank").innerHTML="";$("dist").innerHTML="";$("sc").innerHTML="";
-  $("pw").value="";$("q").value="";$("who").textContent="";$("upd").textContent="";hideTip();$("lerr").textContent=msg||"";$("lock").hidden=false;$("pw").focus();
+  $("app").hidden=true;for(const i of["tb","stats","rank","status","sc"])$(i).innerHTML="";
+  $("pw").value="";$("q").value="";hideTip();$("lerr").textContent=msg||"";$("lock").hidden=false;$("pw").focus();
 }
 $("out").onclick=()=>logout("");
+$("refresh").onclick=()=>load(true);
 $("eye").onclick=()=>{const p=$("pw"),on=p.type=="password";p.type=on?"text":"password";$("eye").textContent=on?"Sembunyi":"Lihat";$("eye").setAttribute("aria-pressed",on)};
 $("lf").onsubmit=async ev=>{ev.preventDefault();PW=$("pw").value;$("lerr").textContent="";$("lbtn").disabled=true;$("lbtn").textContent="Memeriksa…";
   try{await script();D=await decrypt(window.KPI_ENC,PW);try{sessionStorage.setItem("kpipw",PW)}catch(e){}lastSig=sigOf();showApp();render()}
@@ -208,83 +236,84 @@ function bindTip(el,html){
 /* ---------- render ---------- */
 function render(){
   const act=document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.fk:null;
-  const pers=[...new Set(D.rows.map(r=>r.periode))].sort().reverse(), cur=$("per").value&&pers.includes($("per").value)?$("per").value:pers[0];
+  const pers=[...new Set(D.rows.map(r=>r.periode))].sort().reverse(), cur=pers.includes($("per").value)?$("per").value:pers[0];
   $("per").innerHTML=pers.map(p=>`<option ${p==cur?"selected":""}>${p}</option>`).join("");
-  $("upd").textContent="Diperbarui "+D.updated;
+  $("upd").textContent=D.updated;
   const all=D.rows.filter(r=>r.periode==cur), divs=[...new Set(all.map(r=>r.divisi))].sort();
-  $("who").textContent=divs.length>1?"Admin · semua divisi":divs[0]||"";
+  $("who").textContent=divs.length>1?"Admin (semua divisi)":divs[0]||"";
   if(F.div&&!divs.includes(F.div))F.div=null;
-  const base=F.div?all.filter(r=>r.divisi==F.div):all;       // basis grafik
+  $("dvw").hidden=divs.length<2;
+  $("dv").innerHTML=`<option value="">Semua divisi</option>`+divs.map(d=>`<option ${F.div==d?"selected":""}>${esc(d)}</option>`).join("");
+  $("stt").innerHTML=`<option value="">Semua status</option>`+ST.map(s=>`<option value="${s[0]}" ${F.st==s[0]?"selected":""}>${s[2]}</option>`).join("");
+  const base=F.div?all.filter(r=>r.divisi==F.div):all;
+  $("sub").textContent=`Periode ${cur} · ${F.div||(divs.length>1?"semua divisi":divs[0]||"")} · ${base.length} karyawan`;
   const q=$("q").value.toLowerCase();
-  const list=base.filter(r=>(F.bucket==null||inBk(r.skor,F.bucket))&&(r.nama+r.jabatan+r.area).toLowerCase().includes(q));
+  const list=base.filter(r=>(!F.st||stOf(r)==F.st)&&(r.nama+r.jabatan+r.area).toLowerCase().includes(q));
 
-  // stat cards
-  const m=avg(base.map(r=>r.skor));
-  $("stats").innerHTML=[["Rata-rata skor",pct(m),st(m)],["Karyawan",base.length],[divs.length>1?"Divisi":"Jabatan",divs.length>1?divs.length:new Set(base.map(r=>r.jabatan)).size],
-    ["Tercapai (≥90%)",base.filter(r=>r.skor>=.9).length,"ok"],["Rendah (<70%)",base.filter(r=>r.skor<.7).length,"low"]]
-    .map(([t,v,c])=>`<div class="card stat"><div class="lbl">${t}</div><div class="big ${c||""}">${v}</div></div>`).join("");
+  // kartu ringkasan
+  const m=avg(base.map(r=>r.skor)),n=base.length,nOk=base.filter(r=>stOf(r)=="ok").length,nLow=base.filter(r=>stOf(r)=="low").length;
+  const sh=x=>n?Math.round(x/n*100):0;
+  $("stats").innerHTML=[["Skor rata-rata",pct(m),m>=.9?"good":m<.7?"bad":"","Target "+pct(.9)],
+    ["Karyawan",n,"",divs.length>1&&!F.div?divs.length+" divisi":new Set(base.map(r=>r.jabatan)).size+" jabatan"],
+    ["Tercapai",nOk,"good",sh(nOk)+"% dari total · skor ≥ 90%"],["Di bawah target",nLow,"bad",sh(nLow)+"% dari total · skor < 70%"]]
+    .map(([t,v,c,h])=>`<div class="card"><div class="label">${t}</div><div class="value ${c}">${v}</div><div class="hint">${h}</div></div>`).join("");
 
-  // ranking: antar divisi (admin) atau antar jabatan (1 divisi)
-  const byDiv=divs.length>1&&!F.div, key=byDiv?"divisi":"jabatan";
+  // ranking: antar divisi (admin) atau antar jabatan
+  const byDiv=divs.length>1&&!F.div, key=byDiv?"divisi":"jabatan", MAX=1.2;
   $("rt").textContent=byDiv?"Skor rata-rata per divisi":"Skor rata-rata per jabatan"+(F.div?" · "+F.div:"");
   const grp=Object.entries(base.reduce((o,r)=>((o[r[key]]=o[r[key]]||[]).push(r),o),{}))
-    .map(([n,a])=>({n,a,m:avg(a.map(r=>r.skor))})).sort((x,y)=>y.m-x.m).slice(0,15);
-  $("rank").innerHTML=grp.map(g=>`<button class="rb" data-fk="r${esc(g.n)}" data-g="${esc(g.n)}" aria-pressed="${byDiv?F.div==g.n:false}" aria-label="${esc(g.n)}: ${pct(g.m)}, ${g.a.length} orang">
-    <span class="nm">${esc(g.n)}</span><span class="trk"><i class="fill ${st(g.m)}" style="width:${Math.min(g.m,1.2)/1.2*100}%"></i><i class="tgt" style="left:${.9/1.2*100}%"></i></span>
-    <span class="num" style="text-align:right">${pct(g.m)}</span></button>`).join("");
-  document.querySelectorAll(".rb").forEach((el,i)=>{const g=grp[i];
+    .map(([nm,a])=>({n:nm,a,m:avg(a.map(r=>r.skor))})).sort((x,y)=>y.m-x.m).slice(0,15);
+  $("rank").innerHTML=grp.map(g=>`<button class="progress-row" data-fk="r${esc(g.n)}" aria-pressed="${byDiv&&F.div==g.n}" aria-label="${esc(g.n)}: ${pct(g.m)}, ${g.a.length} orang">
+    <span class="progress-label">${esc(g.n)}</span><span class="track"><span class="bar" style="display:block;width:${Math.min(g.m,MAX)/MAX*100}%"></span><i class="target" style="left:${.9/MAX*100}%"></i></span>
+    <span class="pct">${pct(g.m)}</span></button>`).join("");
+  document.querySelectorAll(".progress-row").forEach((el,i)=>{const g=grp[i];
     bindTip(el,`<b>${esc(g.n)}</b><br>${g.a.length} orang · skor ${pct(g.m)}<br>Hadir ${pct(avg(g.a.map(r=>r.kehadiran)))} · Disiplin ${pct(avg(g.a.map(r=>r.kedisiplinan)))} · Target ${pct(avg(g.a.map(r=>r.target)))}`);
-    el.onclick=()=>{if(byDiv)F.div=F.div==g.n?null:g.n;else F.div=null;render()}});
+    el.onclick=()=>{F.div=byDiv?(F.div==g.n?null:g.n):null;render()}});
 
-  // distribusi
-  const cnt=BK.map(([,lo,hi])=>base.filter(r=>r.skor>=lo&&r.skor<hi).length), mx=Math.max(1,...cnt);
-  $("dist").innerHTML=BK.map(([c,,,l],i)=>`<button class="col" data-fk="d${i}" aria-pressed="${F.bucket===i}" aria-label="Skor ${l}: ${cnt[i]} orang">
-    <span class="c num">${cnt[i]}</span><span class="bar ${c}" style="height:${cnt[i]/mx*130}px"></span><span class="l">${l}</span></button>`).join("");
-  document.querySelectorAll(".col").forEach((el,i)=>{bindTip(el,`<b>Skor ${BK[i][3]}</b><br>${cnt[i]} orang (${base.length?Math.round(cnt[i]/base.length*100):0}%)`);
-    el.onclick=()=>{F.bucket=F.bucket===i?null:i;render()}});
+  // kotak status
+  $("status").innerHTML=ST.map(([k,c,l,r])=>{const x=base.filter(b=>stOf(b)==k).length;
+    return `<button class="status-box ${c}" data-fk="s${k}" data-k="${k}" aria-pressed="${F.st==k}" aria-label="${l}: ${x} orang"><span class="label">${l}</span><strong>${x}</strong><small>${r} · ${sh(x)}%</small></button>`}).join("");
+  document.querySelectorAll(".status-box").forEach(el=>{el.onclick=()=>{F.st=F.st==el.dataset.k?null:el.dataset.k;render()}});
 
   scatter(base);
   table(list);
   if(act){const el=document.querySelector(`[data-fk="${CSS.escape(act)}"]`);if(el)el.focus()}
 }
-const inBk=(v,i)=>v>=BK[i][1]&&v<BK[i][2];
 
 function scatter(base){
-  const W=760,H=300,L=44,B=34,T=10,R=12,xm=1.2,ym=1.2;
+  const W=1000,H=320,L=48,B=36,T=12,R=14,xm=1.2,ym=1.2;
   const X=v=>L+Math.min(v,xm)/xm*(W-L-R), Y=v=>H-B-Math.min(v,ym)/ym*(H-B-T);
-  let s=`<svg class="sc" viewBox="0 0 ${W} ${H}" role="group" aria-label="Diagram sebar target terhadap skor akhir">`;
-  for(const t of [0,.2,.4,.6,.8,1,1.2]){s+=`<line class="gl" x1="${L}" x2="${W-R}" y1="${Y(t)}" y2="${Y(t)}"/><text x="${L-6}" y="${Y(t)+4}" text-anchor="end">${Math.round(t*100)}%</text>
-    <text x="${X(t)}" y="${H-B+16}" text-anchor="middle">${Math.round(t*100)}%</text>`}
-  s+=`<line x1="${L}" x2="${W-R}" y1="${Y(.9)}" y2="${Y(.9)}" stroke="var(--tx)" stroke-dasharray="4 4" opacity=".5"/><text x="${W-R}" y="${Y(.9)-4}" text-anchor="end">target 90%</text>
-    <text x="${(L+W-R)/2}" y="${H-2}" text-anchor="middle">% pencapaian target →</text>
-    <text transform="translate(11 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">skor akhir →</text>`;
-  base.forEach((r,i)=>{ // jitter kecil agar titik kembar tidak menumpuk
-    const jx=((i*37)%11-5)*.9,jy=((i*53)%11-5)*.9;
-    s+=`<circle class="pt ${st(r.skor)}" tabindex="0" r="5" cx="${X(r.target)+jx}" cy="${Y(r.skor)+jy}" data-i="${i}" role="button" aria-label="${esc(r.nama)}, skor ${pct(r.skor)}, target ${pct(r.target)}"/>`});
+  let s=`<svg class="sc" viewBox="0 0 ${W} ${H}" role="group" aria-label="Diagram sebar pencapaian target terhadap skor akhir">`;
+  for(const t of [0,.2,.4,.6,.8,1,1.2]){s+=`<line class="gridline" x1="${L}" x2="${W-R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="svg-label" x="${L-6}" y="${Y(t)+4}" text-anchor="end">${Math.round(t*100)}%</text>
+    <text class="svg-label" x="${X(t)}" y="${H-B+16}" text-anchor="middle">${Math.round(t*100)}%</text>`}
+  s+=`<line x1="${L}" x2="${W-R}" y1="${Y(.9)}" y2="${Y(.9)}" stroke="#b42318" stroke-dasharray="5 4"/><text class="svg-label" x="${W-R}" y="${Y(.9)-5}" text-anchor="end" style="fill:#b42318">target 90%</text>
+    <text class="svg-label" x="${(L+W-R)/2}" y="${H-2}" text-anchor="middle">pencapaian target →</text>
+    <text class="svg-label" transform="translate(12 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">skor akhir →</text>`;
+  base.forEach((r,i)=>{const jx=((i*37)%11-5)*.9,jy=((i*53)%11-5)*.9; // jitter kecil: titik kembar tidak menumpuk
+    s+=`<circle class="pt ${stm(stOf(r))[1]}" tabindex="0" r="5" cx="${X(r.target)+jx}" cy="${Y(r.skor)+jy}" data-i="${i}" role="button" aria-label="${esc(r.nama)}, skor ${pct(r.skor)}, target ${pct(r.target)}"/>`});
   $("sc").innerHTML=s+"</svg>";
   document.querySelectorAll("svg.sc .pt").forEach(el=>{const r=base[+el.dataset.i];
     bindTip(el,`<b>${esc(r.nama)}</b><br>${esc(r.jabatan)} · ${esc(r.divisi)}<br>Skor ${pct(r.skor)} · Target ${pct(r.target)}`);
-    const pick=()=>{F.sel=r.nama;F.bucket=null;$("q").value=r.nama;render();const t=document.querySelector("tr.sel");if(t)t.scrollIntoView({block:"center",behavior:"smooth"})};
+    const pick=()=>{F.sel=r.nama;F.st=null;$("q").value=r.nama;render();const t=document.querySelector("tr.sel");if(t)t.scrollIntoView({block:"center",behavior:"smooth"})};
     el.onclick=pick;el.onkeydown=e=>{if(e.key=="Enter"||e.key==" "){e.preventDefault();pick()}}});
 }
 
 function table(list){
   list.sort((a,b)=>(a[S.k]>b[S.k]?1:a[S.k]<b[S.k]?-1:0)*S.d);
   $("cnt").textContent=`· ${list.length} orang`;
-  $("tags").innerHTML=(F.div?`<button class="tag" data-c="div">${esc(F.div)} ${IC.x}</button> `:"")+(F.bucket!=null?`<button class="tag" data-c="bk">Skor ${BK[F.bucket][3]} ${IC.x}</button>`:"");
-  document.querySelectorAll(".tag").forEach(el=>el.onclick=()=>{if(el.dataset.c=="div")F.div=null;else F.bucket=null;render()});
-  $("th").innerHTML="<tr><th scope='col'>#</th>"+COLS.map(([k,t,n])=>`<th scope="col" class="${n?"n":""}" aria-sort="${S.k==k?(S.d>0?"ascending":"descending"):"none"}"><button data-k="${k}" data-fk="h${k}">${t}${S.k==k?(S.d>0?" ▲":" ▼"):""}</button></th>`).join("")+"</tr>";
+  $("th").innerHTML="<tr><th scope='col'>#</th>"+COLS.map(([k,t,n])=>`<th scope="col" class="${n?"":"l"}" aria-sort="${S.k==k?(S.d>0?"ascending":"descending"):"none"}"><button data-k="${k}" data-fk="h${k}">${t}${S.k==k?(S.d>0?" ▲":" ▼"):""}</button></th>`).join("")+"<th scope='col'>Status</th></tr>";
   document.querySelectorAll("th button").forEach(e=>e.onclick=()=>{S={k:e.dataset.k,d:S.k==e.dataset.k?-S.d:-1};render()});
-  $("tb").innerHTML=list.length?list.map((r,i)=>`<tr class="${F.sel==r.nama?"sel":""}"><td class="mut num">${i+1}</td>`+COLS.map(([k,,n])=>
-    k=="skor"?`<td class="n"><span class="pill ${st(r.skor)}">${pct(r.skor)} · ${stl[st(r.skor)]}</span></td>`:n?`<td class="n num">${pct(r[k])}</td>`:`<td>${esc(r[k])}</td>`).join("")+"</tr>").join("")
-    :`<tr><td colspan="9" class="empty">Tidak ada data yang cocok dengan filter.</td></tr>`;
+  $("tb").innerHTML=list.length?list.map((r,i)=>{const sm=stm(stOf(r));return `<tr class="${F.sel==r.nama?"sel":""}"><td class="l" style="color:var(--muted)">${i+1}</td>`+COLS.map(([k,,n])=>
+    n?`<td>${pct(r[k])}</td>`:`<td class="l">${esc(r[k])}</td>`).join("")+`<td><span class="badge ${sm[1]}">${sm[2]}</span></td></tr>`}).join("")
+    :`<tr><td colspan="10" class="empty">Tidak ada data yang cocok dengan filter.</td></tr>`;
 }
 $("per").onchange=render;
+$("dv").onchange=()=>{F.div=$("dv").value||null;render()};
+$("stt").onchange=()=>{F.st=$("stt").value||null;render()};
 $("q").oninput=()=>{F.sel=null;render()};
 document.addEventListener("keydown",e=>{if(e.key=="Escape")hideTip()});
 
 /* ---------- start ---------- */
-$("app").hidden=true;
 if(PW){load(true)}else{$("lock").hidden=false;script().catch(()=>{})}
 </script>
 </body>
